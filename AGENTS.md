@@ -21,3 +21,8 @@ Provide the smallest possible integration layer between LibreLancer and the exte
 - Preserve cancellation, threading and ownership rules of the host application.
 - Keep cross-repository contracts in `Protocol`.
 - Add integration tests for enabled and disabled modes.
+
+## Working-model escalation
+
+- If a task requires complex reasoning beyond the current model's reliable scope, ask the user whether switching to a stronger model is desired before continuing.
+- Do not switch models silently or broaden the task because a stronger model may be useful.
