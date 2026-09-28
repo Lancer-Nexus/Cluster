@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LancerNexus.Cluster", "src\LancerNexus.Cluster\LancerNexus.Cluster.csproj", "{24DB53F2-61D0-4D0A-AB0F-AE8D947D2F72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LancerNexus.Cluster.Tests", "tests\LancerNexus.Cluster.Tests\LancerNexus.Cluster.Tests.csproj", "{B66C03F2-B1E7-4897-89E6-78611B32A329}"
+EndProject
+Global
+  GlobalSection(SolutionConfigurationPlatforms) = preSolution
+    Debug|Any CPU = Debug|Any CPU
+    Release|Any CPU = Release|Any CPU
+  EndGlobalSection
+  GlobalSection(ProjectConfigurationPlatforms) = postSolution
+    {24DB53F2-61D0-4D0A-AB0F-AE8D947D2F72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+    {24DB53F2-61D0-4D0A-AB0F-AE8D947D2F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+    {24DB53F2-61D0-4D0A-AB0F-AE8D947D2F72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+    {24DB53F2-61D0-4D0A-AB0F-AE8D947D2F72}.Release|Any CPU.Build.0 = Release|Any CPU
+    {B66C03F2-B1E7-4897-89E6-78611B32A329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+    {B66C03F2-B1E7-4897-89E6-78611B32A329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+    {B66C03F2-B1E7-4897-89E6-78611B32A329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+    {B66C03F2-B1E7-4897-89E6-78611B32A329}.Release|Any CPU.Build.0 = Release|Any CPU
+  EndGlobalSection
+EndGlobal

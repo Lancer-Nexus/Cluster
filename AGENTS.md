@@ -20,6 +20,9 @@ Provide the smallest possible integration layer between LibreLancer and the exte
 - Make lifecycle hooks safe when services are unavailable.
 - Preserve cancellation, threading and ownership rules of the host application.
 - Keep cross-repository contracts in `Protocol`.
+- Use the shared permission evaluator and revision synchronization API for plugin authorization; never add a second group or wildcard evaluator in a consuming service.
+- A cluster instance must load and activate the current SQL snapshot before it serves permission-protected operations, and ACK only the activated revision. Redis only signals that a reload is needed.
+- Keep local operator UUIDs restricted to console-managed standalone servers with Gateway/cluster disabled.
 - Add integration tests for enabled and disabled modes.
 
 ## Working-model escalation
