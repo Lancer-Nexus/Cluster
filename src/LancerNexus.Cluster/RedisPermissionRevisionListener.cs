@@ -10,6 +10,10 @@ public sealed class RedisPermissionRevisionListener(string endpoint, PermissionS
     PermissionSyncCoordinator coordinator, Action<Exception>? onError = null)
 {
     private const string Channel = "lancer-nexus:permissions:revision";
+    private int ready;
+
+    /// <summary>True only while the Redis subscription is live and its current SQL revision was acknowledged.</summary>
+    public bool IsReady => Volatile.Read(ref ready) == 1 && coordinator.IsReady;
 
     public async Task RunAsync(CancellationToken ct)
     {
@@ -25,6 +29,7 @@ public sealed class RedisPermissionRevisionListener(string endpoint, PermissionS
                 var subscribed = await ReadRespAsync(stream, ct);
                 if (subscribed is not object?[] { Length: 3 }) throw new IOException("Redis did not confirm the permission subscription.");
                 if (!await coordinator.InitializeAsync(ct)) throw new IOException("Permission snapshot could not be loaded and acknowledged.");
+                Volatile.Write(ref ready, 1);
                 while (!ct.IsCancellationRequested)
                 {
                     var response = await ReadRespAsync(stream, ct);
@@ -38,11 +43,14 @@ public sealed class RedisPermissionRevisionListener(string endpoint, PermissionS
             catch (OperationCanceledException) when (ct.IsCancellationRequested) { break; }
             catch (Exception e)
             {
+                Volatile.Write(ref ready, 0);
                 permissions.MarkUnsynchronized();
                 onError?.Invoke(e);
                 await Task.Delay(TimeSpan.FromSeconds(2), ct);
             }
         }
+        Volatile.Write(ref ready, 0);
+        permissions.MarkUnsynchronized();
     }
 
     private static byte[] SubscribeCommand()

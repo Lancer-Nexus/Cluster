@@ -6,8 +6,14 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PackageId>LancerNexus.Cluster</PackageId>
     <RootNamespace>LancerNexus.Cluster</RootNamespace>
+    <Description>Optional shared integration services for Lancer Nexus game instances.</Description>
+    <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Lancer-Nexus/Cluster</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../Protocol/src/LancerNexus.Protocol/LancerNexus.Protocol.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PACKAGE_README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

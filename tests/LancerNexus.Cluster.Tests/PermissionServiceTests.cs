@@ -147,15 +147,29 @@ public sealed class PermissionServiceTests
         Assert.True(service.HasPermission(UserId, "server.stop"));
     }
 
+    [Fact]
+    public async Task FailedInitialAcknowledgementLeavesTheSnapshotUnavailable()
+    {
+        var service = new PermissionService(new PermissionSnapshot(0, [], []));
+        var snapshot = new PermissionSnapshotDocument(2, [new(UserId, [], [new("server.stop", true)])], []);
+        var sync = new PermissionSyncCoordinator("li-01", service, new Source(snapshot), new Ack(false), TimeProvider.System);
+
+        Assert.False(await sync.InitializeAsync(default));
+
+        Assert.False(sync.IsReady);
+        Assert.False(service.IsSynchronized);
+        Assert.False(service.HasPermission(UserId, "server.stop"));
+    }
+
     private sealed class Source(PermissionSnapshotDocument document) : IPermissionSnapshotSource
     {
         public Task<PermissionSnapshotDocument> LoadAsync(CancellationToken cancellationToken) => Task.FromResult(document);
     }
 
-    private sealed class Ack : IPermissionRevisionAcknowledger
+    private sealed class Ack(bool accepted = true) : IPermissionRevisionAcknowledger
     {
         public long Revision { get; private set; }
         public Task<bool> AcknowledgeAsync(PermissionRevisionAcknowledged acknowledgement, CancellationToken cancellationToken)
-        { Revision = acknowledgement.Revision; return Task.FromResult(true); }
+        { Revision = acknowledgement.Revision; return Task.FromResult(accepted); }
     }
 }

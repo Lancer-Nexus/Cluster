@@ -28,4 +28,6 @@ The shared contracts are checked out in the `Protocol` submodule. Update it befo
 git submodule update --init --remote --merge Protocol
 ```
 
-CI performs the same update before restoring and building the Cluster.
+CI recursively checks out the `Protocol` revision pinned by the Cluster repository before restoring and building.
+
+CI also packs both `LancerNexus.Protocol` and `LancerNexus.Cluster` with one run-scoped prerelease version and uploads them together as a short-lived workflow artifact. The Cluster package records the matching Protocol package as a dependency. This makes the dependency boundary reviewable without publishing to a package registry; consumers must continue using their current integration until a deliberate package release is made.

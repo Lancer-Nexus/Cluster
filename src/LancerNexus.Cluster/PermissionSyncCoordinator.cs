@@ -39,6 +39,7 @@ public sealed class PermissionSyncCoordinator(string instanceId, PermissionServi
             var accepted = await acknowledger.AcknowledgeAsync(new PermissionRevisionAcknowledged
             { InstanceId = instanceId, Revision = document.Revision, AppliedUtc = clock.GetUtcNow() }, ct);
             initialized = accepted;
+            if (!accepted) permissionService.MarkUnsynchronized();
             return accepted;
         }
         finally { reloadLock.Release(); }
@@ -56,6 +57,7 @@ public sealed class PermissionSyncCoordinator(string instanceId, PermissionServi
                 var acknowledged = await acknowledger.AcknowledgeAsync(new PermissionRevisionAcknowledged
                 { InstanceId = instanceId, Revision = permissionService.Revision, AppliedUtc = clock.GetUtcNow() }, ct);
                 initialized = acknowledged;
+                if (!acknowledged) permissionService.MarkUnsynchronized();
                 return acknowledged;
             }
             var document = await snapshots.LoadAsync(ct);
@@ -64,6 +66,7 @@ public sealed class PermissionSyncCoordinator(string instanceId, PermissionServi
             var applied = await acknowledger.AcknowledgeAsync(new PermissionRevisionAcknowledged
             { InstanceId = instanceId, Revision = document.Revision, AppliedUtc = clock.GetUtcNow() }, ct);
             initialized = applied;
+            if (!applied) permissionService.MarkUnsynchronized();
             return applied;
         }
         finally { reloadLock.Release(); }
