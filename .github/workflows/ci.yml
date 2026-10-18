@@ -20,7 +20,8 @@ jobs:
         with:
           dotnet-version: '10.0.x'
       - run: dotnet restore
-      - run: dotnet format --verify-no-changes --no-restore
+      - run: dotnet format src/LancerNexus.Cluster/LancerNexus.Cluster.csproj --verify-no-changes --no-restore
+      - run: dotnet format tests/LancerNexus.Cluster.Tests/LancerNexus.Cluster.Tests.csproj --verify-no-changes --no-restore
       - run: dotnet build --configuration Release --no-restore --warnaserror
       - run: dotnet test --configuration Release --no-build --logger trx --collect:"XPlat Code Coverage"
       - run: dotnet pack Protocol/src/LancerNexus.Protocol/LancerNexus.Protocol.csproj --configuration Release --no-restore --output "${{ runner.temp }}/nexus-packages" -p:PackageVersion="$NUGET_PACKAGE_VERSION"
